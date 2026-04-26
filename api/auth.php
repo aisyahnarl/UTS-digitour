@@ -11,8 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
     $result = mysqli_query($conn, $sql);
     $user   = mysqli_fetch_assoc($result);
 
+    // ── DEBUG SEMENTARA ── hapus setelah berhasil
+    echo "<pre>";
+    echo "Email dicari: " . $email . "\n";
+    echo "User ditemukan: "; var_dump($user);
+    if ($user) {
+        echo "Password verify: "; var_dump(password_verify($password, $user['password']));
+    }
+    echo "</pre>";
+    die(); // stop dulu biar bisa baca hasilnya
+    // ── END DEBUG ──
+
     if ($user && password_verify($password, $user['password'])) {
-        // Set session
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['name']    = $user['fullname'];
         $_SESSION['role']    = $user['role'];
@@ -26,11 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
 
     } else {
         $_SESSION['error'] = 'Email atau password salah!';
-        header("Location: /login.php");
+        header("Location: login.php");
         exit;
     }
 }
 
-// Jika akses langsung tanpa POST
-header("Location: /login.php");
+header("Location: login.php");
 exit;
