@@ -1,4 +1,4 @@
-<?php include 'config.php'; ?>
+<?php include __DIR__ . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
@@ -25,11 +25,12 @@
             <div class="hidden md:flex space-x-8 font-semibold text-sm">
                 <a href="#" class="text-blue-600">Beranda</a>
                 <a href="#tentang" class="text-slate-600 hover:text-blue-600 transition text-sm">Tentang</a>
-                <a href="dashboard.php" class="text-slate-600 hover:text-blue-600 transition text-sm">Fitur</a>
+                <a href="/dashboard" class="text-slate-600 hover:text-blue-600 transition text-sm">Fitur</a>
             </div>
             <div class="flex items-center gap-4">
-                <a href="login.php" class="text-sm font-bold text-slate-700 hover:text-blue-600 transition">Masuk</a>
-                <a href="register.php" class="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200">Mulai Sekarang</a>
+                <!-- Ganti login.php → /login (tanpa .php) -->
+                <a href="/login" class="text-sm font-bold text-slate-700 hover:text-blue-600 transition">Masuk</a>
+                <a href="/register" class="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200">Mulai Sekarang</a>
             </div>
         </div>
     </nav>
@@ -47,7 +48,7 @@
                         Platform Digital Tour Guide berbasis video interaktif untuk memberikan pengalaman wisata yang lebih mendalam dan edukatif bagi wisatawan modern.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <a href="dashboard.php" class="bg-white text-blue-700 px-8 py-4 rounded-2xl font-bold hover:bg-blue-50 transition transform active:scale-95 shadow-xl text-center">
+                        <a href="/dashboard" class="bg-white text-blue-700 px-8 py-4 rounded-2xl font-bold hover:bg-blue-50 transition transform active:scale-95 shadow-xl text-center">
                             Pelajari Lebih Lanjut
                         </a>
                     </div>
@@ -121,7 +122,7 @@
                     <h4 class="text-white font-bold mb-6">Menu Cepat</h4>
                     <ul class="space-y-4 text-sm text-slate-400">
                         <li><a href="#" class="hover:text-blue-400 transition">Beranda</a></li>
-                        <li><a href="login.php" class="hover:text-blue-400 transition">Masuk Petualang</a></li>
+                        <li><a href="/login" class="hover:text-blue-400 transition">Masuk Petualang</a></li>
                     </ul>
                 </div>
 
