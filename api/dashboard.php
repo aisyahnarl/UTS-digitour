@@ -1,10 +1,16 @@
 <?php
-session_start();
-// Proteksi halaman: Jika belum login, tendang ke index
-if (!isset($_SESSION['user_id'])) { 
-    header("Location: login.php"); 
+// session_start();
+// // Proteksi halaman: Jika belum login, tendang ke index
+// if (!isset($_SESSION['user_id'])) { 
+//     header("Location: login.php"); 
+//     exit;
+// }
+if (empty($_COOKIE['user_id'])) {
+    header("Location: /login.php");
     exit;
 }
+$userName = $_COOKIE['user_name'];
+$userRole = $_COOKIE['user_role'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
