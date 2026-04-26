@@ -1,5 +1,4 @@
 <?php
-session_start();
 include __DIR__ . '/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -18,6 +17,7 @@ if ($user && password_verify($password, $user['password'])) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['name']    = $user['fullname'];
     $_SESSION['role']    = $user['role'];
+    session_write_close();
 
     if ($user['role'] === 'admin') {
         header("Location: manage_destinasi.php");
@@ -25,9 +25,10 @@ if ($user && password_verify($password, $user['password'])) {
         header("Location: dashboard.php");
     }
     exit;
-
 } else {
     $_SESSION['error'] = 'Email atau password salah!';
+    session_write_close();
     header("Location: login.php");
     exit;
 }
+?>

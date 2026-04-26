@@ -1,7 +1,4 @@
-<?php 
-session_start();  // ← ini yang kurang!
-include __DIR__ . '/config.php';
-?>
+<?php include __DIR__ . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -13,17 +10,14 @@ include __DIR__ . '/config.php';
     <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
 <body class="bg-gradient-to-br from-indigo-600 to-purple-800 min-h-screen flex items-center justify-center p-6">
-    
     <a href="index.php" class="absolute top-8 left-8 text-white/70 hover:text-white flex items-center gap-2 transition font-bold text-sm">
         ← Kembali ke Beranda
     </a>
-
     <div class="bg-white w-full max-w-md rounded-[30px] shadow-2xl overflow-hidden">
         <div class="p-8 text-center">
             <h2 class="text-2xl font-black text-slate-800 mb-2">Buat Akun Baru</h2>
             <p class="text-slate-500 text-sm mb-8">Daftar sekarang untuk mulai menjelajahi destinasi.</p>
 
-            <!-- Tampilkan pesan error/sukses -->
             <?php if (isset($_SESSION['error'])): ?>
                 <div class="bg-red-100 text-red-700 px-4 py-3 rounded-xl text-sm mb-4">
                     <?= $_SESSION['error']; unset($_SESSION['error']); ?>
@@ -56,7 +50,6 @@ include __DIR__ . '/config.php';
                     Buat Akun Baru
                 </button>
             </form>
-
             <div class="mt-8 pt-6 border-t border-slate-100">
                 <p class="text-slate-500 text-sm">Sudah punya akun?
                     <a href="login.php" class="text-indigo-600 font-bold hover:underline">Masuk di sini</a>
