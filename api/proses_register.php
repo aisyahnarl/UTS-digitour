@@ -1,46 +1,44 @@
 <?php
-include 'config.php';
 session_start();
+include __DIR__ . '/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: register.php");
     exit;
 }
 
-$fullname = trim(mysqli_real_escape_string($conn, $_POST['fullname'] ?? ''));
-$email    = trim(strtolower(mysqli_real_escape_string($conn, $_POST['email'] ?? '')));
-$password = trim($_POST['password'] ?? '');
+$fullname = trim(mysqli_real_escape_string($conn, $_POST['fullname']));
+$email    = trim(mysqli_real_escape_string($conn, $_POST['email']));
+$password = $_POST['password'];
 
-// Validasi
-$errors = [];
-
-if (empty($fullname))                                               $errors[] = "Nama lengkap tidak boleh kosong.";
-if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))    $errors[] = "Format email tidak valid.";
-if (strlen($password) < 8)                                          $errors[] = "Password minimal 8 karakter.";
-
-// Cek email duplikat
-if (empty($errors)) {
-    $check = mysqli_query($conn, "SELECT id FROM users WHERE email='$email'");
-    if (mysqli_num_rows($check) > 0) {
-        $errors[] = "Email sudah terdaftar. Silakan login.";
-    }
+// Validasi tidak boleh kosong
+if (empty($fullname) || empty($email) || empty($password)) {
+    $_SESSION['error'] = 'Semua field harus diisi!';
+    header("Location: register.php");
+    exit;
 }
 
-// Simpan ke DB
-if (empty($errors)) {
-    $hashed = password_hash($password, PASSWORD_DEFAULT);
-    $sql    = "INSERT INTO users (fullname, email, password, role) VALUES ('$fullname', '$email', '$hashed', 'user')";
-
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['success'] = "Registrasi berhasil! Silakan login.";
-        header("Location: login.php");
-        exit;
-    } else {
-        $errors[] = "Registrasi gagal: " . mysqli_error($conn);
-    }
+// Cek email sudah terdaftar
+$cek = mysqli_query($conn, "SELECT id FROM users WHERE email = '$email'");
+if (mysqli_num_rows($cek) > 0) {
+    $_SESSION['error'] = 'Email sudah terdaftar, gunakan email lain!';
+    header("Location: register.php");
+    exit;
 }
 
-$_SESSION['error'] = implode('<br>', $errors);
-header("Location: register.php");
-exit;
-?>
+// Hash password
+$hash = password_hash($password, PASSWORD_BCRYPT);
+
+// Insert ke database
+$sql = "INSERT INTO users (fullname, email, password, role) 
+        VALUES ('$fullname', '$email', '$hash', 'user')";
+
+if (mysqli_query($conn, $sql)) {
+    $_SESSION['success'] = 'Akun berhasil dibuat! Silakan masuk.';
+    header("Location: login.php");
+    exit;
+} else {
+    $_SESSION['error'] = 'Gagal membuat akun: ' . mysqli_error($conn);
+    header("Location: register.php");
+    exit;
+}
