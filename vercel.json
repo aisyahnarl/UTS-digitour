@@ -1,28 +1,13 @@
 {
     "functions": {
-        "*.php": {
+        "api/**/*.php": {
             "runtime": "vercel-php@0.7.2"
         },
-        "api/*.php": {
+        "*.php": {
             "runtime": "vercel-php@0.7.2"
         }
     },
     "rewrites": [
-        { "source": "/api/api_wisman.php", "destination": "/api/api_wisman.php" },
-        { "source": "/api/api_provinsi.php", "destination": "/api/api_provinsi.php" },
-        { "source": "/api/api_kabupaten.php", "destination": "/api/api_kabupaten.php" },
-        { "source": "/api/:file.php", "destination": "/api/:file.php" },
-        { "source": "/login", "destination": "/login.php" },
-        { "source": "/logout", "destination": "/logout.php" },
-        { "source": "/register", "destination": "/register.php" },
-        { "source": "/dashboard", "destination": "/dashboard.php" },
-        { "source": "/tour", "destination": "/tour.php" },
-        { "source": "/map_real", "destination": "/map_real.php" },
-        { "source": "/manage_destinasi", "destination": "/manage_destinasi.php" },
-        { "source": "/edit_destinasi", "destination": "/edit_destinasi.php" },
-        { "source": "/dashboard_adm", "destination": "/dashboard_adm.php" },
-        { "source": "/assets/(.*)", "destination": "/assets/$1" },
-        { "source": "/(.*)\\.php", "destination": "/$1.php" },
         { "source": "/(.*)", "destination": "/$1" }
     ]
 }
