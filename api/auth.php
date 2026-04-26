@@ -1,34 +1,31 @@
 <?php
-include __DIR__ . '/config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/config.php';
+header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: /login.php");
-    exit;
-}
+$email = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
 
-$email    = trim(mysqli_real_escape_string($conn, $_POST['email']));
-$password = $_POST['password'];
+try {
+    $stmt = $connection->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$sql    = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
-$result = mysqli_query($conn, $sql);
-$user   = mysqli_fetch_assoc($result);
-
-if ($user && password_verify($password, $user['password'])) {
-
-    // Cookie dengan Secure=true (wajib untuk HTTPS/Vercel)
-    $expire = time() + 86400;
-    setcookie('user_id',   $user['id'],       $expire, '/', '', true, true);
-    setcookie('user_name', $user['fullname'],  $expire, '/', '', true, true);
-    setcookie('user_role', $user['role'],      $expire, '/', '', true, true);
-
-    if ($user['role'] === 'admin') {
-        header("Location: /manage_destinasi.php");
+    if ($row) {
+        if (password_verify($password, $row['password'])) {
+            echo json_encode([
+                'status'   => 'success',
+                'role'     => $row['role'],
+                'email' => $row['email'],
+                'id_users' => $row['id']
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'WRONG_PASSWORD']);
+        }
     } else {
-        header("Location: /dashboard.php");
+        echo json_encode(['status' => 'error', 'message' => 'USER_NOT_FOUND']);
     }
-    exit;
-
-} else {
-    header("Location: /login.php?error=1");
-    exit;
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'DB_ERROR: ' . $e->getMessage()]);
 }
+?>

@@ -1,33 +1,20 @@
 <?php
-$host = "gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com"; 
-$port = 4000;
-$user = "36Js8ra1yYJRUrz.root";    
-$pass = "82CdEOFZFqBq1tXG";       
-$db   = "digitour_db";        
+$host   = 'gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com';
+$user   = '36Js8ra1yYJRUrz.root';
+$pass   = '82CdEOFZFqBq1tXG';
+$dbname = 'digitour_db';
+$port   = 4000;
 
-mysqli_report(MYSQLI_REPORT_OFF);
-
-$conn = mysqli_init();
-
-mysqli_ssl_set($conn, null, null, null, null, null);
-
-$connected = mysqli_real_connect(
-    $conn,
-    $host,
-    $user,
-    $pass,
-    $db,
-    $port,
-    null,
-    MYSQLI_CLIENT_SSL
-);
-
-if (!$connected) {
-    die(json_encode([
-        'status' => 'error',
-        'message' => 'Koneksi gagal: ' . mysqli_connect_error()
-    ]));
+try {
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+    $connection = new PDO($dsn, $user, $pass, [
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        PDO::MYSQL_ATTR_SSL_CA                => '/etc/ssl/certs/ca-certificates.crt',
+        PDO::ATTR_ERRMODE                     => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_TIMEOUT                     => 8,
+    ]);
+} catch (PDOException $e) {
+    http_response_code(500);
+    die("DB Error: " . $e->getMessage());
 }
-
-mysqli_set_charset($conn, 'utf8mb4');
 ?>
