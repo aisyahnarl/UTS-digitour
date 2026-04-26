@@ -2,11 +2,11 @@
 session_start();
 include 'config.php'; 
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-var_dump(session_status()); // harusnya int(2) = PHP_SESSION_ACTIVE
-var_dump(session_id());      // harusnya ada string panjang
-die();
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// var_dump(session_status()); // harusnya int(2) = PHP_SESSION_ACTIVE
+// var_dump(session_id());      // harusnya ada string panjang
+// die();
 ?>
 <!DOCTYPE html>
 <html lang="id">
