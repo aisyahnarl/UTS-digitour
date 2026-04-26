@@ -25,17 +25,17 @@ include 'config.php';
             <h2 class="text-2xl font-black text-slate-800 mb-2">Selamat Datang!</h2>
             <p class="text-slate-500 text-sm mb-8">Silakan masuk untuk melanjutkan petualangan.</p>
 
-            <!-- <?php if (isset($_SESSION['error'])): ?>
+                <?php if (isset($_SESSION['error'])): ?>
                 <div class="bg-red-100 text-red-700 px-4 py-3 rounded-xl text-sm mb-4">
                     <?= $_SESSION['error']; unset($_SESSION['error']); ?>
                 </div>
-            <?php endif; ?>
+                 <?php endif; ?>
 
-            <?php if (isset($_SESSION['success'])): ?>
-                <div class="bg-green-100 text-green-700 px-4 py-3 rounded-xl text-sm mb-4">
-                    <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                </div>
-            <?php endif; ?> -->
+                <?php if (isset($_SESSION['success'])): ?>
+                    <div class="bg-green-100 text-green-700 px-4 py-3 rounded-xl text-sm mb-4">
+                        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+                    </div>
+                <?php endif; ?>
 
             <form action="auth.php" method="POST" class="space-y-5 text-left">
                 <input type="hidden" name="action" value="login">

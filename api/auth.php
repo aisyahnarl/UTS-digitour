@@ -17,11 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
         $_SESSION['name']    = $user['fullname'];
         $_SESSION['role']    = $user['role'];
 
-        // Redirect berdasarkan role
         if ($user['role'] === 'admin') {
-            header("Location: /manage_destinasi.php");
+            header("Location: manage_destinasi.php");
         } else {
-            header("Location: /dashboard.php");
+            header("Location: dashboard.php");
         }
         exit;
 
