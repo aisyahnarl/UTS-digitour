@@ -26,13 +26,13 @@ $userRole = $_COOKIE['user_role'];
             <div>
                 <div class="text-3xl font-black text-blue-600 mb-12 tracking-tighter italic">DigiTour<span class="text-orange-500">.</span></div>
                 <div class="space-y-2">
-                    <a href="dashboard.php" class="flex items-center gap-4 p-4 bg-blue-600 text-white rounded-[24px] shadow-lg shadow-blue-100">
+                    <a href="/dashboard.php" class="flex items-center gap-4 p-4 bg-blue-600 text-white rounded-[24px] shadow-lg shadow-blue-100">
                         <span class="text-xl">🏠</span> <span class="font-bold">Dashboard</span>
                     </a>
-                    <a href="tour.php" class="flex items-center gap-4 p-4 text-slate-400 hover:bg-slate-50 hover:text-blue-600 rounded-[24px] transition-all">
+                    <a href="/tour.php" class="flex items-center gap-4 p-4 text-slate-400 hover:bg-slate-50 hover:text-blue-600 rounded-[24px] transition-all">
                         <span class="text-xl">🎥</span> <span class="font-bold">Guide Library</span>
                     </a>
-                    <a href="map_real.php" class="flex items-center gap-4 p-4 text-slate-400 hover:bg-slate-50 hover:text-blue-600 rounded-[24px] transition-all">
+                    <a href="/map_real.php" class="flex items-center gap-4 p-4 text-slate-400 hover:bg-slate-50 hover:text-blue-600 rounded-[24px] transition-all">
                         <span class="text-xl">📍</span> <span class="font-bold">Peta Real-Time</span>
                     </a>
                 </div>
