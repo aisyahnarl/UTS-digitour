@@ -1,12 +1,11 @@
 <?php
-session_start(); // ← tambah ini
+session_start();
 include __DIR__ . '/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: login.php");
     exit;
 }
-
 
 $email    = trim(mysqli_real_escape_string($conn, $_POST['email']));
 $password = $_POST['password'];
@@ -17,9 +16,8 @@ $user   = mysqli_fetch_assoc($result);
 
 if ($user && password_verify($password, $user['password'])) {
     $_SESSION['user_id'] = $user['id'];
-    $_SESSION['name']    = $user['fullname'];
+    $_SESSION['name']    = $user['fullname']; // ← pastikan ini ada
     $_SESSION['role']    = $user['role'];
-    session_write_close();
 
     if ($user['role'] === 'admin') {
         header("Location: manage_destinasi.php");
@@ -29,7 +27,6 @@ if ($user && password_verify($password, $user['password'])) {
     exit;
 } else {
     $_SESSION['error'] = 'Email atau password salah!';
-    session_write_close();
     header("Location: login.php");
     exit;
 }
