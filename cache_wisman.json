@@ -1,0 +1,23 @@
+{
+    "status": "success",
+    "tahun": "2026",
+    "diambil_pada": "2026-04-26 01:24:51",
+    "per_bulan": {
+        "labels": [
+            "Tidak ada"
+        ],
+        "values": [
+            0
+        ]
+    },
+    "per_kebangsaan": {
+        "labels": [],
+        "values": []
+    },
+    "ringkasan": {
+        "grand_total": 0,
+        "rata_rata_bulan": 0,
+        "bulan_tertinggi": "Tidak ada",
+        "nilai_tertinggi": 0
+    }
+}
