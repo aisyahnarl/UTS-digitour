@@ -1,8 +1,8 @@
 <?php
-session_start();
+
 // Proteksi login: Sama dengan file lainnya
-if (!isset($_SESSION['user_id'])) { 
-    header("Location: login.php"); 
+if (empty($_COOKIE['user_id'])) {
+    header("Location: /login.php");
     exit;
 }
 ?>
@@ -26,21 +26,21 @@ if (!isset($_SESSION['user_id'])) {
             <div class="space-y-2">
                 <div class="text-3xl font-black text-blue-600 mb-10 tracking-tighter italic">DigiTour<span class="text-orange-500">.</span></div>
                 
-                <a href="dashboard.php" class="flex items-center gap-4 p-4 text-slate-500 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all">
+                <a href="/dashboard.php" class="flex items-center gap-4 p-4 text-slate-500 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all">
                     <span class="text-xl">🏠</span> <span class="font-bold">Dashboard</span>
                 </a>
                 
-                <a href="tour.php" class="flex items-center gap-4 p-4 text-slate-500 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all">
+                <a href="/tour.php" class="flex items-center gap-4 p-4 text-slate-500 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all">
                     <span class="text-xl">🎥</span> <span class="font-bold">Guide Library</span>
                 </a>
                 
-                <a href="map_real.php" class="flex items-center gap-4 p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-200 transition-all">
+                <a href="/map_real.php" class="flex items-center gap-4 p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-200 transition-all">
                     <span class="text-xl">📍</span> <span class="font-bold">Peta Real-Time</span>
                 </a>
             </div>
 
             <div class="pb-6">
-                <a href="logout.php" class="flex items-center gap-4 p-4 text-red-500 hover:bg-red-50 rounded-2xl transition-all">
+                <a href="/logout.php" class="flex items-center gap-4 p-4 text-red-500 hover:bg-red-50 rounded-2xl transition-all">
                     <span class="text-xl">🚪</span> <span class="font-bold">Keluar</span>
                 </a>
             </div>
