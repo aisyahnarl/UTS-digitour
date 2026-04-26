@@ -1,12 +1,5 @@
 <?php 
-session_start();
 include 'config.php'; 
-
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-// var_dump(session_status()); // harusnya int(2) = PHP_SESSION_ACTIVE
-// var_dump(session_id());      // harusnya ada string panjang
-// die();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -22,7 +15,7 @@ include 'config.php';
 </head>
 <body class="bg-gradient-to-br from-blue-600 to-indigo-800 min-h-screen flex items-center justify-center p-6">
     
-    <a href="index.php" class="absolute top-8 left-8 text-white/70 hover:text-white flex items-center gap-2 transition font-bold text-sm">
+    <a href="/index.php" class="absolute top-8 left-8 text-white/70 hover:text-white flex items-center gap-2 transition font-bold text-sm">
         ← Kembali ke Beranda
     </a>
 
@@ -31,19 +24,19 @@ include 'config.php';
             <h2 class="text-2xl font-black text-slate-800 mb-2">Selamat Datang!</h2>
             <p class="text-slate-500 text-sm mb-8">Silakan masuk untuk melanjutkan petualangan.</p>
 
-                <?php if (isset($_SESSION['error'])): ?>
-                <div class="bg-red-100 text-red-700 px-4 py-3 rounded-xl text-sm mb-4">
-                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                </div>
-                 <?php endif; ?>
+            <?php if (isset($_GET['error'])): ?>
+            <div class="bg-red-100 text-red-700 px-4 py-3 rounded-xl text-sm mb-4">
+                Email atau password salah!
+            </div>
+            <?php endif; ?>
 
-                <?php if (isset($_SESSION['success'])): ?>
-                    <div class="bg-green-100 text-green-700 px-4 py-3 rounded-xl text-sm mb-4">
-                        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                    </div>
-                <?php endif; ?>
+            <?php if (isset($_GET['success'])): ?>
+            <div class="bg-green-100 text-green-700 px-4 py-3 rounded-xl text-sm mb-4">
+                Registrasi berhasil! Silakan login.
+            </div>
+            <?php endif; ?>
 
-            <form action="auth.php" method="POST" class="space-y-5 text-left">
+            <form action="/auth.php" method="POST" class="space-y-5 text-left">
                 <input type="hidden" name="action" value="login">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
@@ -58,7 +51,7 @@ include 'config.php';
 
             <div class="mt-8 pt-6 border-t border-slate-100">
                 <p class="text-slate-500 text-sm">Belum punya akun? 
-                    <a href="register.php" class="text-blue-600 font-bold hover:underline">Daftar Sekarang</a>
+                    <a href="/register.php" class="text-blue-600 font-bold hover:underline">Daftar Sekarang</a>
                 </p>
             </div>
         </div>
