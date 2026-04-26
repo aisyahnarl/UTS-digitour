@@ -4,23 +4,22 @@
             "runtime": "vercel-php@0.7.2"
         }
     },
-    "rewrites": [
-        { "source": "/index.php", "destination": "/api/index.php" },
-        { "source": "/login.php", "destination": "/api/login.php" },
-        { "source": "/logout.php", "destination": "/api/logout.php" },
-        { "source": "/register.php", "destination": "/api/register.php" },
-        { "source": "/auth.php", "destination": "/api/auth.php" },
-        { "source": "/dashboard.php", "destination": "/api/dashboard.php" },
-        { "source": "/dashboard_adm.php", "destination": "/api/dashboard_adm.php" },
-        { "source": "/tour.php", "destination": "/api/tour.php" },
-        { "source": "/map_real.php", "destination": "/api/map_real.php" },
-        { "source": "/manage_destinasi.php", "destination": "/api/manage_destinasi.php" },
-        { "source": "/edit_destinasi.php", "destination": "/api/edit_destinasi.php" },
-        { "source": "/proses_register.php", "destination": "/api/proses_register.php" },
-        { "source": "/api_wisman.php", "destination": "/api/api_wisman.php" },
-        { "source": "/api_provinsi.php", "destination": "/api/api_provinsi.php" },
-        { "source": "/api_kabupaten.php", "destination": "/api/api_kabupaten.php" },
-        { "source": "/assets/(.*)", "destination": "/assets/$1" },
-        { "source": "/", "destination": "/api/index.php" }
+    "routes": [
+        { "src": "/assets/(.*)", "dest": "/assets/$1" },
+        { "src": "/login.php", "dest": "/api/login.php" },
+        { "src": "/logout.php", "dest": "/api/logout.php" },
+        { "src": "/register.php", "dest": "/api/register.php" },
+        { "src": "/auth.php", "dest": "/api/auth.php" },
+        { "src": "/dashboard.php", "dest": "/api/dashboard.php" },
+        { "src": "/tour.php", "dest": "/api/tour.php" },
+        { "src": "/map_real.php", "dest": "/api/map_real.php" },
+        { "src": "/manage_destinasi.php", "dest": "/api/manage_destinasi.php" },
+        { "src": "/edit_destinasi.php", "dest": "/api/edit_destinasi.php" },
+        { "src": "/proses_register.php", "dest": "/api/proses_register.php" },
+        { "src": "/api_wisman.php", "dest": "/api/api_wisman.php" },
+        { "src": "/api_provinsi.php", "dest": "/api/api_provinsi.php" },
+        { "src": "/api_kabupaten.php", "dest": "/api/api_kabupaten.php" },
+        { "src": "/index.php", "dest": "/api/index.php" },
+        { "src": "/", "dest": "/api/index.php" }
     ]
 }
