@@ -1,10 +1,12 @@
 <?php
+session_start(); // ← tambah ini
 include __DIR__ . '/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: login.php");
     exit;
 }
+
 
 $email    = trim(mysqli_real_escape_string($conn, $_POST['email']));
 $password = $_POST['password'];

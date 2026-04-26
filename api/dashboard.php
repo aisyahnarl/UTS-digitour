@@ -1,7 +1,7 @@
 <?php
-include __DIR__ . '/config.php'; // sudah include session_start()
+session_start(); // ← tambahkan ini di baris PALING ATAS
+include __DIR__ . '/config.php';
 
-// Proteksi: cek session, bukan cookie
 if (empty($_SESSION['user_id'])) {
     header("Location: /login.php");
     exit;
