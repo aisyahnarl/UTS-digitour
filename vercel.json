@@ -2,12 +2,23 @@
     "functions": {
         "api/**/*.php": {
             "runtime": "vercel-php@0.7.2"
-        },
-        "*.php": {
-            "runtime": "vercel-php@0.7.2"
         }
     },
     "rewrites": [
-        { "source": "/(.*)", "destination": "/$1" }
+        { "source": "/", "destination": "/api/index.php" },
+        { "source": "/login", "destination": "/api/login.php" },
+        { "source": "/logout", "destination": "/api/logout.php" },
+        { "source": "/register", "destination": "/api/register.php" },
+        { "source": "/dashboard", "destination": "/api/dashboard.php" },
+        { "source": "/tour", "destination": "/api/tour.php" },
+        { "source": "/map_real", "destination": "/api/map_real.php" },
+        { "source": "/manage_destinasi", "destination": "/api/manage_destinasi.php" },
+        { "source": "/edit_destinasi", "destination": "/api/edit_destinasi.php" },
+        { "source": "/dashboard_adm", "destination": "/api/dashboard_adm.php" },
+        { "source": "/auth", "destination": "/api/auth.php" },
+        { "source": "/proses_register", "destination": "/api/proses_register.php" },
+        { "source": "/api/:file.php", "destination": "/api/:file.php" },
+        { "source": "/assets/(.*)", "destination": "/assets/$1" },
+        { "source": "/(.*)", "destination": "/api/$1" }
     ]
 }
