@@ -11,32 +11,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
     $result = mysqli_query($conn, $sql);
     $user   = mysqli_fetch_assoc($result);
 
-    // ── DEBUG SEMENTARA ── hapus setelah berhasil
-    echo "<pre>";
-    echo "Email dicari: " . $email . "\n";
-    echo "User ditemukan: "; var_dump($user);
-    if ($user) {
-        echo "Password verify: "; var_dump(password_verify($password, $user['password']));
-    }
-    echo "</pre>";
-    die(); // stop dulu biar bisa baca hasilnya
-    // ── END DEBUG ──
-
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['name']    = $user['fullname'];
         $_SESSION['role']    = $user['role'];
 
+        // Deteksi base path otomatis
+        $base = dirname($_SERVER['PHP_SELF']);
+        $base = rtrim($base, '/');
+
         if ($user['role'] === 'admin') {
-            header("Location: manage_destinasi.php");
+            header("Location: $base/manage_destinasi.php");
         } else {
-            header("Location: dashboard.php");
+            header("Location: $base/dashboard.php");
         }
         exit;
 
     } else {
         $_SESSION['error'] = 'Email atau password salah!';
-        header("Location: login.php");
+        $base = dirname($_SERVER['PHP_SELF']);
+        $base = rtrim($base, '/');
+        header("Location: $base/login.php");
         exit;
     }
 }
