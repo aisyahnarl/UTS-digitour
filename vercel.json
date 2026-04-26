@@ -5,20 +5,22 @@
         }
     },
     "rewrites": [
-        { "source": "/", "destination": "/api/index.php" },
-        { "source": "/login", "destination": "/api/login.php" },
-        { "source": "/logout", "destination": "/api/logout.php" },
-        { "source": "/register", "destination": "/api/register.php" },
-        { "source": "/dashboard", "destination": "/api/dashboard.php" },
-        { "source": "/tour", "destination": "/api/tour.php" },
-        { "source": "/map_real", "destination": "/api/map_real.php" },
-        { "source": "/manage_destinasi", "destination": "/api/manage_destinasi.php" },
-        { "source": "/edit_destinasi", "destination": "/api/edit_destinasi.php" },
-        { "source": "/dashboard_adm", "destination": "/api/dashboard_adm.php" },
-        { "source": "/auth", "destination": "/api/auth.php" },
-        { "source": "/proses_register", "destination": "/api/proses_register.php" },
-        { "source": "/api/:file.php", "destination": "/api/:file.php" },
+        { "source": "/index.php", "destination": "/api/index.php" },
+        { "source": "/login.php", "destination": "/api/login.php" },
+        { "source": "/logout.php", "destination": "/api/logout.php" },
+        { "source": "/register.php", "destination": "/api/register.php" },
+        { "source": "/auth.php", "destination": "/api/auth.php" },
+        { "source": "/dashboard.php", "destination": "/api/dashboard.php" },
+        { "source": "/dashboard_adm.php", "destination": "/api/dashboard_adm.php" },
+        { "source": "/tour.php", "destination": "/api/tour.php" },
+        { "source": "/map_real.php", "destination": "/api/map_real.php" },
+        { "source": "/manage_destinasi.php", "destination": "/api/manage_destinasi.php" },
+        { "source": "/edit_destinasi.php", "destination": "/api/edit_destinasi.php" },
+        { "source": "/proses_register.php", "destination": "/api/proses_register.php" },
+        { "source": "/api_wisman.php", "destination": "/api/api_wisman.php" },
+        { "source": "/api_provinsi.php", "destination": "/api/api_provinsi.php" },
+        { "source": "/api_kabupaten.php", "destination": "/api/api_kabupaten.php" },
         { "source": "/assets/(.*)", "destination": "/assets/$1" },
-        { "source": "/(.*)", "destination": "/api/$1" }
+        { "source": "/", "destination": "/api/index.php" }
     ]
 }
