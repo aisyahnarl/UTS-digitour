@@ -1,16 +1,14 @@
 <?php
-// session_start();
-// // Proteksi halaman: Jika belum login, tendang ke index
-// if (!isset($_SESSION['user_id'])) { 
-//     header("Location: login.php"); 
-//     exit;
-// }
-if (empty($_COOKIE['user_id'])) {
+include __DIR__ . '/config.php'; // sudah include session_start()
+
+// Proteksi: cek session, bukan cookie
+if (empty($_SESSION['user_id'])) {
     header("Location: /login.php");
     exit;
 }
-$userName = $_COOKIE['user_name'];
-$userRole = $_COOKIE['user_role'];
+
+$userName = $_SESSION['name'];
+$userRole = $_SESSION['role'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -46,14 +44,14 @@ $userRole = $_COOKIE['user_role'];
         <main class="flex-1 p-6 md:p-12 overflow-y-auto">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                 <div>
-                   <h2 class="text-4xl font-black text-slate-800 tracking-tight">Halo, <?php echo $userName; ?>! 👋</h2>
+                   <h2 class="text-4xl font-black text-slate-800 tracking-tight">Halo, <?php echo htmlspecialchars($userName); ?>! 👋</h2>
                     <p class="text-slate-400 mt-1 font-medium">Siap untuk petualangan digital hari ini?</p>
                 </div>
                 <div class="flex items-center gap-4 bg-white p-2 pr-6 rounded-full shadow-sm border border-slate-100">
                     <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-xl">👤</div>
                     <div>
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Status Akun</p>
-                        <p class="text-sm font-black text-blue-600 uppercase"><?php echo $userRole; ?> Member</p>
+                        <p class="text-sm font-black text-blue-600 uppercase"><?php echo htmlspecialchars($userRole); ?> Member</p>
                     </div>
                 </div>
             </div>

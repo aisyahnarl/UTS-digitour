@@ -1,5 +1,7 @@
 <?php
-session_start();
+include __DIR__ . '/config.php';
+$_SESSION = [];
 session_destroy();
-header("Location: index.php");
+header("Location: /login.php");
+exit;
 ?>
