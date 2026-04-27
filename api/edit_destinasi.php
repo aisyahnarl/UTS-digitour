@@ -241,11 +241,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </h2>
 
                         <!-- Preview Foto Saat Ini -->
-                        <div id="current-photo-wrap" class="<?= empty($row['foto'])?> mb-5">
+                        <?php if (!empty($row['foto'])): ?>
+                        <div id="current-photo-wrap" class="mb-5">
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Foto Saat Ini</p>
                             <div class="relative group rounded-2xl overflow-hidden border border-slate-200">
                                 <img id="current-photo-img"
-                                     src="<?= htmlspecialchars($row['foto'] ?? '') ?>"
+                                     src="<?= htmlspecialchars($row['foto']) ?>"
                                      alt="Foto saat ini"
                                      class="w-full h-52 object-cover">
                                 <!-- Overlay hapus -->
@@ -266,6 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </button>
                             </div>
                         </div>
+                        <?php endif; ?>
 
                         <!-- Input hapus foto (hidden) -->
                         <input type="checkbox" name="hapus_foto" id="cb-hapus-foto" class="hidden">
@@ -280,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- Drop Zone Upload Foto Baru -->
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                                <?= (!empty($row['foto']) && !empty($row['foto']) ? 'Ganti Foto' : 'Upload Foto' ?>
+                                <?= !empty($row['foto']) ? 'Ganti Foto' : 'Upload Foto' ?>
                             </p>
 
                             <!-- Drop Area -->
@@ -359,7 +361,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="flex justify-between">
                                 <span class="text-xs text-slate-400">Status Foto</span>
                                 <?php if (!empty($row['foto'])): ?>
-    
                                 <span class="text-xs font-bold text-green-600 flex items-center gap-1">
                                     <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Ada
                                 </span>
@@ -447,7 +448,8 @@ function dropFile(e) {
 function konfirmasiHapusFoto() {
     if (!confirm('Yakin ingin menghapus foto destinasi ini?')) return;
     document.getElementById('cb-hapus-foto').checked = true;
-    document.getElementById('current-photo-wrap').classList.add('hidden');
+    const wrap = document.getElementById('current-photo-wrap');
+    if (wrap) wrap.classList.add('hidden');
     document.getElementById('hapus-notice').classList.remove('hidden');
     lucide.createIcons();
 }
@@ -457,7 +459,8 @@ function batalHapusFoto() {
     document.getElementById('hapus-notice').classList.add('hidden');
 
     <?php if (!empty($row['foto'])): ?>
-    document.getElementById('current-photo-wrap').classList.remove('hidden');
+    const wrap = document.getElementById('current-photo-wrap');
+    if (wrap) wrap.classList.remove('hidden');
     <?php endif; ?>
 
     lucide.createIcons();

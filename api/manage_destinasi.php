@@ -273,14 +273,14 @@ $result = mysqli_query($conn, "SELECT * FROM destinasi ORDER BY id_destinasi DES
                                         <div class="flex items-start gap-4">
                                             <!-- Tampilkan foto thumbnail jika ada -->
                                             <?php if (!empty($row['foto'])): ?>
-<img src="<?= $row['foto'] ?>"
-     alt="<?= htmlspecialchars($row['nama_wisata']) ?>"
-     class="w-14 h-14 rounded-xl object-cover border border-slate-100 flex-shrink-0">
-<?php else: ?>
-<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 flex-shrink-0">
-    <i data-lucide="image" class="w-6 h-6"></i>
-</div>
-<?php endif; ?>
+                                            <img src="<?= $row['foto'] ?>"
+                                                 alt="<?= htmlspecialchars($row['nama_wisata']) ?>"
+                                                 class="w-14 h-14 rounded-xl object-cover border border-slate-100 flex-shrink-0">
+                                            <?php else: ?>
+                                            <div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 flex-shrink-0">
+                                                <i data-lucide="image" class="w-6 h-6"></i>
+                                            </div>
+                                            <?php endif; ?>
                                             <div>
                                                 <div class="flex items-center gap-2">
                                                     <span class="font-bold text-slate-800"><?= htmlspecialchars($row['nama_wisata']); ?></span>
@@ -297,7 +297,7 @@ $result = mysqli_query($conn, "SELECT * FROM destinasi ORDER BY id_destinasi DES
                                     </td>
                                     <td class="p-6 text-center">
                                         <div class="flex items-center justify-center gap-3">
-                                            <a href="/edit_destinasi.php?id=<?= $row['id_destinasi']; ?>"
+                                            <a href="edit_destinasi.php?id=<?= $row['id_destinasi']; ?>"
                                                class="text-blue-400 hover:text-blue-600 transition-all" title="Edit">
                                                 <i data-lucide="pencil" class="w-5 h-5"></i>
                                             </a>
