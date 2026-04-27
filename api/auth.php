@@ -12,12 +12,19 @@ try {
 
     if ($row) {
         if (password_verify($password, $row['password'])) {
-            echo json_encode([
-                'status'   => 'success',
-                'role'     => $row['role'],
-                'email' => $row['email'],
-                'id_users' => $row['id']
-            ]);
+            if ($row['role'] === 'admin') {
+            header("Location: /manage_destinasi.php");
+        } else {
+            header("Location: /dashboard.php");
+        }
+        exit;
+            // echo json_encode([
+            //     'status'   => 'success',
+            //     'role'     => $row['role'],
+            //     'email' => $row['email'],
+            //     'id_users' => $row['id']
+            // ]);
+
         } else {
             echo json_encode(['status' => 'error', 'message' => 'WRONG_PASSWORD']);
         }
