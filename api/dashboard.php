@@ -1,19 +1,9 @@
 <?php
-/**
- * dashboard.php
- * Letakkan di: /api/dashboard.php
- *
- * JANGAN tambah session_start() — sudah ada di config.php
- */
+session_start();
 include __DIR__ . '/config.php';
 
-if (empty($_SESSION['user_id'])) {
-    header("Location: /login.php");
-    exit;
-}
-
-$userName = $_SESSION['name'];
-$userRole = $_SESSION['role'];
+var_dump($_SESSION); // ← tambah ini
+die();
 ?>
 <!DOCTYPE html>
 <html lang="id">

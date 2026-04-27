@@ -83,7 +83,7 @@ $(function () {
                 if (res.status === 'success') {
                     $('#btn-text').text('Berhasil! Mengalihkan...');
                     // Langsung redirect tanpa reload manual
-                    window.location.href = res.redirect;
+                      window.location.href = res.redirect;
                 } else {
                     $errBox.removeClass('hidden').text(res.message || 'Login gagal.');
                     resetBtn();
