@@ -7,7 +7,7 @@ $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 try {
-    $stmt = $connection->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
