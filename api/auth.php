@@ -1,8 +1,7 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/api/config.php';
-// header('Content-Type: application/json');
 
-$email = $_POST['email'] ?? '';
+$email    = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 try {
@@ -10,29 +9,25 @@ try {
     $stmt->execute([$email]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($row) {
-        if (password_verify($password, $row['password'])) {
-            if ($row['role'] === 'admin') {
+    if ($row && password_verify($password, $row['password'])) {
+        session_start();
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['name']    = $row['fullname'];
+        $_SESSION['role']    = $row['role'];
+        session_write_close();
+
+        if ($row['role'] === 'admin') {
             header("Location: /manage_destinasi.php");
         } else {
             header("Location: /dashboard.php");
         }
         exit;
-            // echo json_encode([
-            //     'status'   => 'success',
-            //     'role'     => $row['role'],
-            //     'email' => $row['email'],
-            //     'id_users' => $row['id']
-            // ]);
-
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'WRONG_PASSWORD']);
-        }
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'USER_NOT_FOUND']);
+        header("Location: /login.php?error=1");
+        exit;
     }
 } catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'DB_ERROR: ' . $e->getMessage()]);
+    header("Location: /login.php?error=2");
+    exit;
 }
 ?>
