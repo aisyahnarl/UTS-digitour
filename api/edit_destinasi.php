@@ -38,37 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $foto_lama    = $row['foto'];
     $foto         = $foto_lama; // default: pakai foto lama
 
-    // ── Hapus foto jika diminta ──
-    if (isset($_POST['hapus_foto']) && !empty($foto_lama)) {
-        if (file_exists($foto_lama)) unlink($foto_lama);
-        $foto = '';
-    }
-
-    // ── Upload foto baru jika ada ──
-    if (!empty($_FILES['foto']['name'])) {
-        $ekstensiValid = ['jpg', 'jpeg', 'png', 'webp'];
-        $ekstensi      = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
-        $ukuran        = $_FILES['foto']['size'];
-
-        if (!in_array($ekstensi, $ekstensiValid)) {
-            $error = "Format foto tidak valid. Gunakan JPG, PNG, atau WEBP.";
-        } elseif ($ukuran > 2 * 1024 * 1024) {
-            $error = "Ukuran foto maksimal 2MB.";
-        } else {
-            // Hapus foto lama jika ada
-            if (!empty($foto_lama) && file_exists($foto_lama)) {
-                unlink($foto_lama);
-            }
-
-            if (!is_dir('assets')) mkdir('assets', 0755, true);
-
-            $namaFile = 'assets/' . time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $_FILES['foto']['name']);
-            if (move_uploaded_file($_FILES['foto']['tmp_name'], $namaFile)) {
-                $foto = mysqli_real_escape_string($conn, $namaFile);
-            } else {
-                $error = "Gagal mengupload foto. Periksa permission folder assets/.";
-            }
-        }
+   
     }
 
     if (empty($error)) {
@@ -86,7 +56,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM destinasi WHERE id_destinasi=$id"));
         $success = "Data destinasi berhasil diperbarui!";
     }
-}
+
+    // ── Hapus foto jika diminta ──
+        if (isset($_POST['hapus_foto'])) {
+        $foto = '';
+        }
+
+        // ── Upload foto baru jika ada ──
+        if (!empty($_FILES['foto']['name']) && $_FILES['foto']['error'] === 0) {
+        $ekstensiValid = ['jpg', 'jpeg', 'png', 'webp'];
+        $ekstensi      = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+        $ukuran        = $_FILES['foto']['size'];
+
+        if (!in_array($ekstensi, $ekstensiValid)) {
+            $error = "Format foto tidak valid. Gunakan JPG, PNG, atau WEBP.";
+        } elseif ($ukuran > 2 * 1024 * 1024) {
+            $error = "Ukuran foto maksimal 2MB.";
+        } else {
+            $fileData = file_get_contents($_FILES['foto']['tmp_name']);
+            $base64   = base64_encode($fileData);
+            $mimeType = $_FILES['foto']['type'];
+            $foto     = "data:$mimeType;base64,$base64";
+        }
+        }
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -256,7 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </h2>
 
                         <!-- Preview Foto Saat Ini -->
-                        <div id="current-photo-wrap" class="<?= empty($row['foto']) || !file_exists($row['foto']) ? 'hidden' : '' ?> mb-5">
+                        <div id="current-photo-wrap" class="<?= empty($row['foto'])?> mb-5">
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Foto Saat Ini</p>
                             <div class="relative group rounded-2xl overflow-hidden border border-slate-200">
                                 <img id="current-photo-img"
@@ -337,7 +330,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
 
                         <!-- Info saat ini tidak ada foto -->
-                        <?php if (empty($row['foto']) || !file_exists($row['foto'])): ?>
+                        <?php if (empty($row['foto'])): ?>
                         <div class="mt-4 flex items-center gap-2 px-4 py-3 bg-orange-50 border border-orange-100 rounded-2xl">
                             <i data-lucide="image-off" class="w-4 h-4 text-orange-400 shrink-0"></i>
                             <p class="text-xs text-orange-500 font-medium">Destinasi ini belum memiliki foto.</p>
