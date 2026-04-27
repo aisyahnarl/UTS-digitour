@@ -1,6 +1,6 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/api/config.php';
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
