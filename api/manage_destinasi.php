@@ -297,7 +297,7 @@ $result = mysqli_query($conn, "SELECT * FROM destinasi ORDER BY id_destinasi DES
                                     </td>
                                     <td class="p-6 text-center">
                                         <div class="flex items-center justify-center gap-3">
-                                            <a href="edit_destinasi.php?id=<?= $row['id_destinasi']; ?>"
+                                            <a href="/edit_destinasi.php?id=<?= $row['id_destinasi']; ?>"
                                                class="text-blue-400 hover:text-blue-600 transition-all" title="Edit">
                                                 <i data-lucide="pencil" class="w-5 h-5"></i>
                                             </a>
