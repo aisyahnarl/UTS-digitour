@@ -1,32 +1,31 @@
 <?php
-
+session_start();
 include __DIR__ . '/config.php';
+
 header('Content-Type: application/json');
 
-$email = $_POST['email'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['status' => 'error', 'message' => 'Method tidak valid']);
+    exit;
+}
+
+$email    = mysqli_real_escape_string($conn, trim($_POST['email'] ?? ''));
 $password = $_POST['password'] ?? '';
 
-try {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+$result = mysqli_query($conn, "SELECT * FROM users WHERE email='$email' LIMIT 1");
+$user   = mysqli_fetch_assoc($result);
 
-    if ($row) {
-        if (password_verify($password, $row['password'])) {
-            echo json_encode([
-                'status'   => 'success',
-                'role'     => $row['role'],
-                'email' => $row['email'],
-                'id_users' => $row['id_users']
-            ]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'WRONG_PASSWORD']);
-        }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'USER_NOT_FOUND']);
-    }
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'DB_ERROR: ' . $e->getMessage()]);
+if ($user && password_verify($password, $user['password'])) {
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['name']    = $user['fullname'];
+    $_SESSION['role']    = $user['role'];
+    session_write_close();
+
+    echo json_encode([
+        'status'   => 'success',
+        'redirect' => $user['role'] === 'admin' ? '/manage_destinasi.php' : '/dashboard.php'
+    ]);
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Email atau password salah!']);
 }
 ?>
