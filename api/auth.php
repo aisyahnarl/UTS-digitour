@@ -1,5 +1,6 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/api/config.php';
+
+include __DIR__ . '/config.php';
 header('Content-Type: application/json');
 
 $email = $_POST['email'] ?? '';
