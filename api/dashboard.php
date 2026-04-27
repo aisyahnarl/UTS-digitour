@@ -1,9 +1,14 @@
 <?php
-session_start();
 include __DIR__ . '/config.php';
 
-var_dump($_SESSION); // ← tambah ini
-die();
+$userId   = $_COOKIE['user_id']  ?? null;
+$userName = $_COOKIE['username'] ?? null;
+$userRole = $_COOKIE['userrole'] ?? null;
+
+if (empty($userId)) {
+    header("Location: /login.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">

@@ -1,5 +1,4 @@
 <?php
-session_start();
 include __DIR__ . '/config.php';
 
 header('Content-Type: application/json');
@@ -16,10 +15,9 @@ $result = mysqli_query($conn, "SELECT * FROM users WHERE email='$email' LIMIT 1"
 $user   = mysqli_fetch_assoc($result);
 
 if ($user && password_verify($password, $user['password'])) {
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['name']    = $user['fullname'];
-    $_SESSION['role']    = $user['role'];
-    session_write_close();
+    setcookie('user_id',  $user['id'],       time()+86400, '/', '', true, false);
+    setcookie('username', $user['fullname'], time()+86400, '/', '', true, false);
+    setcookie('userrole', $user['role'],     time()+86400, '/', '', true, false);
 
     echo json_encode([
         'status'   => 'success',
