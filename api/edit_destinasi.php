@@ -1,12 +1,14 @@
 <?php
-session_start();
+$userId   = $_COOKIE['user_id']  ?? null;
+$userName = $_COOKIE['username'] ?? null;
+$userRole = $_COOKIE['userrole'] ?? null;
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
+if (empty($userId) || $userRole !== 'admin') {
+    header("Location: /login.php");
     exit;
 }
 
-include 'config.php';
+include __DIR__ . '/config.php';
 
 // Validasi ID
 $id = intval($_GET['id'] ?? 0);
