@@ -1,38 +1,31 @@
 <?php
-session_start();
-include $_SERVER['DOCUMENT_ROOT'] . '/api/config.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/koneksi.php';
+header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: /login.php");
-    exit;
-}
-
-$email    = $_POST['email'] ?? '';
+$email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 try {
-    $stmt = $connection->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+    $stmt = $connection->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['name']    = $user['fullname'];
-        $_SESSION['role']    = $user['role'];
-        session_write_close();
-
-        if ($user['role'] === 'admin') {
-            header("Location: /manage_destinasi.php");
+    if ($row) {
+        if (password_verify($password, $row['password'])) {
+            echo json_encode([
+                'status'   => 'success',
+                'role'     => $row['role'],
+                'email' => $row['email'],
+                'id_users' => $row['id_users']
+            ]);
         } else {
-            header("Location: /dashboard.php");
+            echo json_encode(['status' => 'error', 'message' => 'WRONG_PASSWORD']);
         }
-        exit;
     } else {
-        header("Location: /login.php?error=1");
-        exit;
+        echo json_encode(['status' => 'error', 'message' => 'USER_NOT_FOUND']);
     }
 } catch (PDOException $e) {
-    header("Location: /login.php?error=2");
-    exit;
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'DB_ERROR: ' . $e->getMessage()]);
 }
 ?>
