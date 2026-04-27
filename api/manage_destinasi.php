@@ -18,29 +18,29 @@ if (isset($_POST['tambah'])) {
     $kabupaten_id = $_POST['kabupaten_id'];
     $desc         = mysqli_real_escape_string($conn, $_POST['deskripsi']);
 
-    // ── Handle upload foto ──
     $foto = '';
-    if (!empty($_FILES['foto']['name'])) {
+    if (!empty($_FILES['foto']['name']) && $_FILES['foto']['error'] === 0) {
         $ekstensiValid = ['jpg', 'jpeg', 'png', 'webp'];
         $ekstensi      = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
         $ukuran        = $_FILES['foto']['size'];
 
         if (!in_array($ekstensi, $ekstensiValid)) {
-            die("Format foto tidak valid. Gunakan JPG, PNG, atau WEBP.");
+            die("Format foto tidak valid.");
         }
         if ($ukuran > 2 * 1024 * 1024) {
             die("Ukuran foto maksimal 2MB.");
         }
 
-        if (!is_dir('assets')) mkdir('assets', 0755, true);
-
-        $namaFile = 'assets/' . time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $_FILES['foto']['name']);
-        move_uploaded_file($_FILES['foto']['tmp_name'], $namaFile);
-        $foto = mysqli_real_escape_string($conn, $namaFile);
+        // Konversi ke base64 dan simpan langsung ke DB
+        $fileData  = file_get_contents($_FILES['foto']['tmp_name']);
+        $base64    = base64_encode($fileData);
+        $mimeType  = $_FILES['foto']['type'];
+        $foto      = "data:$mimeType;base64,$base64";
     }
 
+    $foto_escaped = mysqli_real_escape_string($conn, $foto);
     mysqli_query($conn, "INSERT INTO destinasi (nama_wisata, kategori, provinsi_id, kabupaten_id, deskripsi, foto) 
-                         VALUES ('$nama','$kat','$provinsi_id','$kabupaten_id','$desc','$foto')");
+                         VALUES ('$nama','$kat','$provinsi_id','$kabupaten_id','$desc','$foto_escaped')");
     header("Location: manage_destinasi.php");
     exit;
 }
@@ -272,22 +272,22 @@ $result = mysqli_query($conn, "SELECT * FROM destinasi ORDER BY id_destinasi DES
                                     <td class="p-6">
                                         <div class="flex items-start gap-4">
                                             <!-- Tampilkan foto thumbnail jika ada -->
-                                            <?php if (!empty($row['foto']) && file_exists($row['foto'])): ?>
-                                            <img src="<?= htmlspecialchars($row['foto']) ?>"
-                                                 alt="<?= htmlspecialchars($row['nama_wisata']) ?>"
-                                                 class="w-14 h-14 rounded-xl object-cover border border-slate-100 flex-shrink-0">
-                                            <?php else: ?>
-                                            <div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 flex-shrink-0">
-                                                <i data-lucide="image" class="w-6 h-6"></i>
-                                            </div>
-                                            <?php endif; ?>
+                                            <?php if (!empty($row['foto'])): ?>
+<img src="<?= $row['foto'] ?>"
+     alt="<?= htmlspecialchars($row['nama_wisata']) ?>"
+     class="w-14 h-14 rounded-xl object-cover border border-slate-100 flex-shrink-0">
+<?php else: ?>
+<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 flex-shrink-0">
+    <i data-lucide="image" class="w-6 h-6"></i>
+</div>
+<?php endif; ?>
                                             <div>
                                                 <div class="flex items-center gap-2">
                                                     <span class="font-bold text-slate-800"><?= htmlspecialchars($row['nama_wisata']); ?></span>
                                                     <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded border border-blue-100"><?= htmlspecialchars($row['kategori']); ?></span>
                                                 </div>
                                                 <p class="text-[11px] text-slate-400 mt-1 line-clamp-1"><?= htmlspecialchars($row['deskripsi']); ?></p>
-                                                <?php if (empty($row['foto']) || !file_exists($row['foto'])): ?>
+                                                <?php if (empty($row['foto'])): ?>
                                                 <p class="text-[10px] text-orange-400 mt-1 flex items-center gap-1">
                                                     ⚠️ Belum ada foto
                                                 </p>
