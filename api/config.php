@@ -9,12 +9,11 @@ try {
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
     $connection = new PDO($dsn, $user, $pass, [
         PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-        PDO::MYSQL_ATTR_SSL_CA                => '/etc/ssl/certs/ca-certificates.crt',
-        PDO::ATTR_ERRMODE                     => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_TIMEOUT                     => 8,
+        PDO::ATTR_ERRMODE                      => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_TIMEOUT                      => 8,
     ]);
 } catch (PDOException $e) {
     http_response_code(500);
-    die("DB Error: " . $e->getMessage());
+    die(json_encode(['status' => 'error', 'message' => 'DB Error: ' . $e->getMessage()]));
 }
 ?>
