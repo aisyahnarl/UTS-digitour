@@ -1,5 +1,5 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/api/koneksi.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/config.php';
 header('Content-Type: application/json');
 
 $email = $_POST['email'] ?? '';
