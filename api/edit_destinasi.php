@@ -1,6 +1,5 @@
 <?php
 $userId   = $_COOKIE['user_id']  ?? null;
-$userName = $_COOKIE['username'] ?? null;
 $userRole = $_COOKIE['userrole'] ?? null;
 
 if (empty($userId) || $userRole !== 'admin') {
@@ -10,24 +9,21 @@ if (empty($userId) || $userRole !== 'admin') {
 
 include __DIR__ . '/config.php';
 
-// Validasi ID
 $id = intval($_GET['id'] ?? 0);
 if ($id <= 0) {
-    header("Location: manage_destinasi.php");
+    header("Location: /manage_destinasi.php");
     exit;
 }
 
-// Ambil data destinasi lama
 $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM destinasi WHERE id_destinasi=$id"));
 if (!$row) {
-    header("Location: manage_destinasi.php");
+    header("Location: /manage_destinasi.php");
     exit;
 }
 
 $success = '';
 $error   = '';
 
-// ── Proses UPDATE ──────────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $nama         = mysqli_real_escape_string($conn, $_POST['nama_wisata']);
@@ -35,35 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $provinsi_id  = $_POST['provinsi_id'];
     $kabupaten_id = $_POST['kabupaten_id'];
     $desc         = mysqli_real_escape_string($conn, $_POST['deskripsi']);
-    $foto_lama    = $row['foto'];
-    $foto         = $foto_lama; // default: pakai foto lama
-
-   
-    }
-
-    if (empty($error)) {
-        mysqli_query($conn,
-            "UPDATE destinasi SET
-                nama_wisata   = '$nama',
-                kategori      = '$kat',
-                provinsi_id   = '$provinsi_id',
-                kabupaten_id  = '$kabupaten_id',
-                deskripsi     = '$desc',
-                foto          = '$foto'
-             WHERE id_destinasi = $id"
-        );
-        // Reload data terbaru
-        $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM destinasi WHERE id_destinasi=$id"));
-        $success = "Data destinasi berhasil diperbarui!";
-    }
+    $foto         = $row['foto']; // default: pakai foto lama
 
     // ── Hapus foto jika diminta ──
-        if (isset($_POST['hapus_foto'])) {
+    if (isset($_POST['hapus_foto'])) {
         $foto = '';
-        }
+    }
 
-        // ── Upload foto baru jika ada ──
-        if (!empty($_FILES['foto']['name']) && $_FILES['foto']['error'] === 0) {
+    // ── Upload foto baru jika ada ──
+    if (!empty($_FILES['foto']['name']) && $_FILES['foto']['error'] === 0) {
         $ekstensiValid = ['jpg', 'jpeg', 'png', 'webp'];
         $ekstensi      = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
         $ukuran        = $_FILES['foto']['size'];
@@ -78,8 +54,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mimeType = $_FILES['foto']['type'];
             $foto     = "data:$mimeType;base64,$base64";
         }
-        }
+    }
 
+    if (empty($error)) {
+        $foto_escaped = mysqli_real_escape_string($conn, $foto);
+        mysqli_query($conn,
+            "UPDATE destinasi SET
+                nama_wisata  = '$nama',
+                kategori     = '$kat',
+                provinsi_id  = '$provinsi_id',
+                kabupaten_id = '$kabupaten_id',
+                deskripsi    = '$desc',
+                foto         = '$foto_escaped'
+             WHERE id_destinasi = $id"
+        );
+        $row     = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM destinasi WHERE id_destinasi=$id"));
+        $success = "Data destinasi berhasil diperbarui!";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -288,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- Drop Zone Upload Foto Baru -->
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                                <?= (!empty($row['foto']) && file_exists($row['foto'])) ? 'Ganti Foto' : 'Upload Foto' ?>
+                                <?= (!empty($row['foto']) && !empty($row['foto']) ? 'Ganti Foto' : 'Upload Foto' ?>
                             </p>
 
                             <!-- Drop Area -->
@@ -366,7 +358,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-xs text-slate-400">Status Foto</span>
-                                <?php if (!empty($row['foto']) && file_exists($row['foto'])): ?>
+                                <?php if (!empty($row['foto'])): ?>
+    
                                 <span class="text-xs font-bold text-green-600 flex items-center gap-1">
                                     <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Ada
                                 </span>
@@ -463,7 +456,7 @@ function batalHapusFoto() {
     document.getElementById('cb-hapus-foto').checked = false;
     document.getElementById('hapus-notice').classList.add('hidden');
 
-    <?php if (!empty($row['foto']) && file_exists($row['foto'])): ?>
+    <?php if (!empty($row['foto'])): ?>
     document.getElementById('current-photo-wrap').classList.remove('hidden');
     <?php endif; ?>
 
